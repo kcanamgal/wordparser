@@ -36,12 +36,12 @@ public class FileService {
                 default:
                     return null;
             }
-//            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
 //            messageDigest.update();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return name;
     }
 }

@@ -21,6 +21,10 @@ public class RestResult<T> {
         this.data = data;
     }
 
+    public static <T> RestResult<T> success(T data) {
+        return new RestResult<>(0, "success", data);
+    }
+
     public Integer getCode() {
         return code;
     }

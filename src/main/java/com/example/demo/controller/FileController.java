@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.VO.Token;
 import com.example.demo.service.FileService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,10 +19,9 @@ public class FileController {
 
     @Operation(summary = "文档载入")
     @PostMapping(value = "/")
-    public String loadFile(
+    public Token loadFile(
             @Parameter(description = "文档二进制文件流") @RequestPart("file") MultipartFile file,
-            @Parameter(description = "文档名称") @RequestParam(required = false) String fileName)
-    {
+            @Parameter(description = "文档名称") @RequestParam(required = false) String fileName) {
         return fileService.loadFile(file, fileName);
     }
 }

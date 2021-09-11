@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.VO.Token;
 import com.example.demo.util.XWPFUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,25 +24,25 @@ public class FileService {
      * @param fileName
      * @return
      */
-    public String loadFile(MultipartFile file, String fileName) {
+    public Token loadFile(MultipartFile file, String fileName) {
         String name = file.getOriginalFilename();
         assert name != null;
         String suffix = name.substring(name.lastIndexOf('.') + 1);
-        try {
-            switch (suffix) {
-                case "doc":
-                case "docx": XWPFUtils.parse(file.getInputStream()); break;
-                case "wps":
-                case "pdf": break;
-                default:
-                    return null;
-            }
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-//            messageDigest.update();
+        switch (suffix) {
+            case "doc":
+            case "docx":
+            case "wps":
+            case "pdf": break;
+            default:
+                throw new RuntimeException(FILE_FORMAT_NOT_SUPPORTED);
         }
-        catch (Exception e) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return name;
+//            messageDigest.update();
+
+        return new Token(name);
     }
 }

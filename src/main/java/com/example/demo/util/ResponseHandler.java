@@ -1,6 +1,7 @@
-package com.example.demo.VO;
+package com.example.demo.util;
 
 import com.alibaba.fastjson.JSON;
+import com.example.demo.VO.RestResult;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -23,6 +24,9 @@ public class ResponseHandler implements ResponseBodyAdvice<Object> {
                                   ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         if (o instanceof String) {
             return JSON.toJSONString(RestResult.success(o));
+        }
+        if (o instanceof RestResult) {
+            return o;
         }
         return RestResult.success(o);
     }

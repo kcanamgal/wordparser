@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("通用返回数据")
-public class RestResult<T> {
+public class RestResult {
 
     @ApiModelProperty("标识代码")
     private Integer code;
@@ -13,16 +13,20 @@ public class RestResult<T> {
     private String msg;
 
     @ApiModelProperty("返回的数据")
-    private T data;
+    private Object data;
 
-    public RestResult(Integer status, String msg, T data) {
+    public RestResult(Integer status, String msg, Object data) {
         this.code = status;
         this.msg = msg;
         this.data = data;
     }
 
-    public static <T> RestResult<T> success(T data) {
-        return new RestResult<>(0, "success", data);
+    public static RestResult success(Object data) {
+        return new RestResult(0, "success", data);
+    }
+
+    public static RestResult failure(String msg) {
+        return new RestResult(1, msg, null);
     }
 
     public Integer getCode() {
@@ -41,11 +45,11 @@ public class RestResult<T> {
         this.msg = msg;
     }
 
-    public T getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }

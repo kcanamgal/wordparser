@@ -4,5 +4,7 @@ public class EncodingHelper {
 
     private EncodingHelper() { }
 
-//    public static String SHA256Encoding()
+    public static String SHA256Encoding() {
+        return null;
+    }
 }

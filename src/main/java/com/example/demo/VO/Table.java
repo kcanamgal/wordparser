@@ -27,4 +27,44 @@ public class Table {
 
     @ApiModelProperty("表格文本内容")
     private String tableContent; //类型存疑
+
+    public String getTextBefore() {
+        return textBefore;
+    }
+
+    public void setTextBefore(String textBefore) {
+        this.textBefore = textBefore;
+    }
+
+    public String getTextAfter() {
+        return textAfter;
+    }
+
+    public void setTextAfter(String textAfter) {
+        this.textAfter = textAfter;
+    }
+
+    public Integer getParagraphBefore() {
+        return paragraphBefore;
+    }
+
+    public void setParagraphBefore(Integer paragraphBefore) {
+        this.paragraphBefore = paragraphBefore;
+    }
+
+    public Integer getParagraphAfter() {
+        return paragraphAfter;
+    }
+
+    public void setParagraphAfter(Integer paragraphAfter) {
+        this.paragraphAfter = paragraphAfter;
+    }
+
+    public String getTableContent() {
+        return tableContent;
+    }
+
+    public void setTableContent(String tableContent) {
+        this.tableContent = tableContent;
+    }
 }

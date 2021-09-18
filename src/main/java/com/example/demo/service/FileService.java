@@ -36,12 +36,6 @@ public class FileService {
             default:
                 throw new RuntimeException(FILE_FORMAT_NOT_SUPPORTED);
         }
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-//            messageDigest.update();
 
         return new Token(name);
     }

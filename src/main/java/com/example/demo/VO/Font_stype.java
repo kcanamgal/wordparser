@@ -30,4 +30,53 @@ public class Font_stype {
 
     @ApiModelProperty("字间距")
     private Integer fontAlignment;
+
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Integer getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    public String getFontName() {
+        return fontName;
+    }
+
+    public void setFontName(String fontName) {
+        this.fontName = fontName;
+    }
+
+    public Boolean getBold() {
+        return isBold;
+    }
+
+    public void setBold(Boolean bold) {
+        isBold = bold;
+    }
+
+    public Boolean getItalic() {
+        return isItalic;
+    }
+
+    public void setItalic(Boolean italic) {
+        isItalic = italic;
+    }
+
+    public Integer getFontAlignment() {
+        return fontAlignment;
+    }
+
+    public void setFontAlignment(Integer fontAlignment) {
+        this.fontAlignment = fontAlignment;
+    }
 }

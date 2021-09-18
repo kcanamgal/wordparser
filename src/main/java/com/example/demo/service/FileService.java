@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.VO.Token;
+import com.example.demo.util.HWPFUtils;
 import com.example.demo.util.XWPFUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -28,13 +30,18 @@ public class FileService {
         String name = file.getOriginalFilename();
         assert name != null;
         String suffix = name.substring(name.lastIndexOf('.') + 1);
-        switch (suffix) {
-            case "doc":
-            case "docx":
-            case "wps":
-            case "pdf": break;
-            default:
-                throw new RuntimeException(FILE_FORMAT_NOT_SUPPORTED);
+        try {
+            switch (suffix) {
+                case "doc":
+                case "docx": HWPFUtils.parse(file.getInputStream()); break;
+                case "wps": XWPFUtils.parse(file.getInputStream()); break;
+                case "pdf": break;
+                default:
+                    throw new RuntimeException(FILE_FORMAT_NOT_SUPPORTED);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
 
         return new Token(name);

@@ -49,13 +49,13 @@ public class Paragraph {
     private Boolean isTableRowEnd;
 
     @ApiModelProperty("左方缩排")
-    private Integer indentFromLeft;  //类型存疑
+    private Integer indentFromLeft;
 
     @ApiModelProperty("右方缩排")
-    private Integer indentFromRight;  //类型存疑
+    private Integer indentFromRight;
 
     @ApiModelProperty("第一行缩排")
-    private Integer firstLineIndent;  //类型存疑
+    private Integer firstLineIndent;
 
     public String getParagraphText() {
         return paragraphText;

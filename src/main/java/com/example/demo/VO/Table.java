@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigInteger;
+
 @ApiModel("表格")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,13 +22,13 @@ public class Table {
     private String textAfter;
 
     @ApiModelProperty("表格前的段落")
-    private Integer paragraphBefore;
+    private BigInteger paragraphBefore;
 
     @ApiModelProperty("表格后的段落")
-    private Integer paragraphAfter;
+    private BigInteger paragraphAfter;
 
     @ApiModelProperty("表格文本内容")
-    private String tableContent; //类型存疑
+    private String tableContent;
 
     public String getTextBefore() {
         return textBefore;
@@ -44,19 +46,19 @@ public class Table {
         this.textAfter = textAfter;
     }
 
-    public Integer getParagraphBefore() {
+    public BigInteger getParagraphBefore() {
         return paragraphBefore;
     }
 
-    public void setParagraphBefore(Integer paragraphBefore) {
+    public void setParagraphBefore(BigInteger paragraphBefore) {
         this.paragraphBefore = paragraphBefore;
     }
 
-    public Integer getParagraphAfter() {
+    public BigInteger getParagraphAfter() {
         return paragraphAfter;
     }
 
-    public void setParagraphAfter(Integer paragraphAfter) {
+    public void setParagraphAfter(BigInteger paragraphAfter) {
         this.paragraphAfter = paragraphAfter;
     }
 

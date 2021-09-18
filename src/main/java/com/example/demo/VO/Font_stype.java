@@ -31,7 +31,6 @@ public class Font_stype {
     @ApiModelProperty("字间距")
     private Integer fontAlignment;
 
-
     public String getColor() {
         return color;
     }

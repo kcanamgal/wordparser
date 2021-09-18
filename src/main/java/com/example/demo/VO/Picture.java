@@ -33,4 +33,60 @@ public class Picture {
 
     @ApiModelProperty("文件名")
     private String filename;
+
+    public String getTextBefore() {
+        return textBefore;
+    }
+
+    public void setTextBefore(String textBefore) {
+        this.textBefore = textBefore;
+    }
+
+    public String getTextAfter() {
+        return textAfter;
+    }
+
+    public void setTextAfter(String textAfter) {
+        this.textAfter = textAfter;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    public String getSuggestFileExtension() {
+        return suggestFileExtension;
+    }
+
+    public void setSuggestFileExtension(String suggestFileExtension) {
+        this.suggestFileExtension = suggestFileExtension;
+    }
+
+    public String getBase64Content() {
+        return base64Content;
+    }
+
+    public void setBase64Content(String base64Content) {
+        this.base64Content = base64Content;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 }

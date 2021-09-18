@@ -17,14 +17,54 @@ public class Paragraph_stype {
     private Integer lineSpacing;
 
     @ApiModelProperty("左方缩排")
-    private Integer indentFromLeft; //类型存疑
+    private Integer indentFromLeft;
 
     @ApiModelProperty("右方缩排")
-    private Integer indentFromRight; //类型存疑
+    private Integer indentFromRight;
 
     @ApiModelProperty("第一行缩排")
-    private Integer firstLineIndent; //类型存疑
+    private Integer firstLineIndent;
 
     @ApiModelProperty("大纲级别")
-    private Integer lvl; //类型存疑
+    private Integer lvl;
+
+    public Integer getLineSpacing() {
+        return lineSpacing;
+    }
+
+    public void setLineSpacing(Integer lineSpacing) {
+        this.lineSpacing = lineSpacing;
+    }
+
+    public Integer getIndentFromLeft() {
+        return indentFromLeft;
+    }
+
+    public void setIndentFromLeft(Integer indentFromLeft) {
+        this.indentFromLeft = indentFromLeft;
+    }
+
+    public Integer getIndentFromRight() {
+        return indentFromRight;
+    }
+
+    public void setIndentFromRight(Integer indentFromRight) {
+        this.indentFromRight = indentFromRight;
+    }
+
+    public Integer getFirstLineIndent() {
+        return firstLineIndent;
+    }
+
+    public void setFirstLineIndent(Integer firstLineIndent) {
+        this.firstLineIndent = firstLineIndent;
+    }
+
+    public Integer getLvl() {
+        return lvl;
+    }
+
+    public void setLvl(Integer lvl) {
+        this.lvl = lvl;
+    }
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @ApiModel("段落")
 @NoArgsConstructor
@@ -22,22 +23,22 @@ public class Paragraph {
     private BigInteger paragraphId;
 
     @ApiModelProperty("字体大小")
-    private Integer fontSize;
+    private List<Double> fontSize;
 
     @ApiModelProperty("字体名")
-    private String fontName;
+    private List<String> fontName;
 
     @ApiModelProperty("是否为粗体")
-    private Boolean isBold;
+    private List<Boolean> isBold;
 
     @ApiModelProperty("是否为斜体")
-    private Boolean isItalic;
+    private List<Boolean> isItalic;
 
     @ApiModelProperty("是否在表格中")
     private Boolean isInTable;
 
     @ApiModelProperty("大纲级别")
-    private Integer lvl;  //类型存疑
+    private Integer lvl;
 
     @ApiModelProperty("行距")
     private Integer lineSpacing;
@@ -73,35 +74,35 @@ public class Paragraph {
         this.paragraphId = paragraphId;
     }
 
-    public Integer getFontSize() {
+    public List<Double> getFontSize() {
         return fontSize;
     }
 
-    public void setFontSize(Integer fontSize) {
+    public void setFontSize(List<Double> fontSize) {
         this.fontSize = fontSize;
     }
 
-    public String getFontName() {
+    public List<String> getFontName() {
         return fontName;
     }
 
-    public void setFontName(String fontName) {
+    public void setFontName(List<String> fontName) {
         this.fontName = fontName;
     }
 
-    public Boolean getBold() {
+    public List<Boolean> getBold() {
         return isBold;
     }
 
-    public void setBold(Boolean bold) {
+    public void setBold(List<Boolean> bold) {
         isBold = bold;
     }
 
-    public Boolean getItalic() {
+    public List<Boolean> getItalic() {
         return isItalic;
     }
 
-    public void setItalic(Boolean italic) {
+    public void setItalic(List<Boolean> italic) {
         isItalic = italic;
     }
 

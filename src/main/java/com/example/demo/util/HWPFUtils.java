@@ -1,5 +1,6 @@
 package com.example.demo.util;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Paragraph;
 import org.apache.poi.hwpf.usermodel.Range;
@@ -30,11 +31,11 @@ public final class HWPFUtils {
     }
 
     private static void fill(Paragraph paragraphModel, com.example.demo.VO.Paragraph paragraph) {
-        paragraph.setFontName(paragraphModel.getCharacterRun(0).getFontName());
-        paragraph.setFontSize(paragraphModel.getCharacterRun(0).getFontSize());
+        //paragraph.setFontName(paragraphModel.getCharacterRun(0).getFontName());
+        //paragraph.setFontSize(paragraphModel.getCharacterRun(0).getFontSize());
         paragraph.setFontAlignment(paragraphModel.getFontAlignment());
-        paragraph.setBold(paragraphModel.getCharacterRun(0).isBold());
-        paragraph.setItalic(paragraphModel.getCharacterRun(0).isItalic());
+        //paragraph.setBold(paragraphModel.getCharacterRun(0).isBold());
+        //paragraph.setItalic(paragraphModel.getCharacterRun(0).isItalic());
         paragraph.setLvl(paragraphModel.getLvl());
         paragraph.setLineSpacing(paragraphModel.getLineSpacing().toInt());
         paragraph.setFirstLineIndent(paragraphModel.getFirstLineIndent());

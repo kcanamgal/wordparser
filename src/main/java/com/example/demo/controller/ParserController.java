@@ -46,7 +46,7 @@ public class ParserController {
     @GetMapping("/{token}/paragraph/{paragraph_id}")
     public Paragraph getParagraph(
             @Parameter(description = "文档的唯一标识token") @PathVariable String token,
-            @Parameter(description = "段落id") @PathVariable String paragraph_id) {
+            @Parameter(description = "段落id") @PathVariable BigInteger paragraph_id) {
         return null;
     }
 
@@ -54,7 +54,7 @@ public class ParserController {
     @GetMapping("/{token}/paragraph/{paragraph_id}/paragraph_stype")
     public Paragraph_stype getParagraph_stype(
             @Parameter(description = "文档的唯一标识token") @PathVariable String token,
-            @Parameter(description = "段落id") @PathVariable String paragraph_id) {
+            @Parameter(description = "段落id") @PathVariable BigInteger paragraph_id) {
         return null;
     }
 
@@ -62,7 +62,7 @@ public class ParserController {
     @GetMapping("/{token}/paragraph/{paragraph_id}/font_stype")
     public List<Font_stype> getParagraph_Font_stype(
             @Parameter(description = "文档的唯一标识token") @PathVariable String token,
-            @Parameter(description = "段落id") @PathVariable String paragraph_id) {
+            @Parameter(description = "段落id") @PathVariable BigInteger paragraph_id) {
         return null;
     }
 
@@ -70,7 +70,7 @@ public class ParserController {
     @GetMapping("/{token}/title/{paragraph_id}/all_paragraphs")
     public List<Paragraph> getTitleParagraphs (
             @Parameter(description = "文档的唯一标识token") @PathVariable String token,
-            @Parameter(description = "段落id") @PathVariable String paragraph_id) {
+            @Parameter(description = "段落id") @PathVariable BigInteger paragraph_id) {
         return null;
     }
 
@@ -78,7 +78,7 @@ public class ParserController {
     @GetMapping("/{token}/paragraph/{paragraph_id}/all_pics")
     public List<Picture> getTitlePictures (
             @Parameter(description = "文档的唯一标识token") @PathVariable String token,
-            @Parameter(description = "段落id") @PathVariable String paragraph_id) {
+            @Parameter(description = "段落id") @PathVariable BigInteger paragraph_id) {
         return null;
     }
 
@@ -86,7 +86,7 @@ public class ParserController {
     @GetMapping("/{token}/paragraph/{paragraph_id}/all_tables")
     public List<Table> getTitleTables (
             @Parameter(description = "文档的唯一标识token") @PathVariable String token,
-            @Parameter(description = "段落id") @PathVariable String paragraph_id) {
+            @Parameter(description = "段落id") @PathVariable BigInteger paragraph_id) {
         return null;
     }
 

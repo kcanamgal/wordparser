@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class)
-    public RestResult handleException(RuntimeException t, HttpServletRequest httpServletRequest) {
-        return RestResult.failure(t.getMessage());
-    }
+//    @ExceptionHandler(RuntimeException.class)
+//    public RestResult handleException(RuntimeException t, HttpServletRequest httpServletRequest) {
+//        return RestResult.failure(t.getMessage());
+//    }
 }

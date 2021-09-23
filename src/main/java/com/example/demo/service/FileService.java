@@ -33,8 +33,8 @@ public class FileService {
         try {
             switch (suffix) {
                 case "doc":
-                case "docx": HWPFUtils.parse(file.getInputStream()); break;
-                case "wps": XWPFUtils.parse(file.getInputStream()); break;
+                case "wps": HWPFUtils.parse(file.getInputStream()); break;
+                case "docx": XWPFUtils.parse(file.getInputStream()); break;
                 case "pdf": break;
                 default:
                     throw new RuntimeException(FILE_FORMAT_NOT_SUPPORTED);

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class Font_stype {
     @ApiModelProperty("颜色")
-    private String color;
+    private Integer color;
 
     @ApiModelProperty("字体大小")
     private Integer fontSize;
@@ -31,11 +31,11 @@ public class Font_stype {
     @ApiModelProperty("字间距")
     private Integer fontAlignment;
 
-    public String getColor() {
+    public Integer getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Integer color) {
         this.color = color;
     }
 
@@ -55,7 +55,7 @@ public class Font_stype {
         this.fontName = fontName;
     }
 
-    public Boolean getBold() {
+    public Boolean isBold() {
         return isBold;
     }
 
@@ -63,7 +63,7 @@ public class Font_stype {
         isBold = bold;
     }
 
-    public Boolean getItalic() {
+    public Boolean isItalic() {
         return isItalic;
     }
 

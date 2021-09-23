@@ -20,10 +20,10 @@ public class Picture {
     private String textAfter;
 
     @ApiModelProperty("图片高度")
-    private Integer height;
+    private Double height;
 
     @ApiModelProperty("图片宽度")
-    private Integer width;
+    private Double width;
 
     @ApiModelProperty("建议使用的文件扩展名")
     private String suggestFileExtension;
@@ -50,19 +50,19 @@ public class Picture {
         this.textAfter = textAfter;
     }
 
-    public Integer getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public void setHeight(Integer height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
-    public Integer getWidth() {
+    public Double getWidth() {
         return width;
     }
 
-    public void setWidth(Integer width) {
+    public void setWidth(Double width) {
         this.width = width;
     }
 

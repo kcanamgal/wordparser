@@ -106,7 +106,7 @@ public class Paragraph {
         isItalic = italic;
     }
 
-    public Boolean getInTable() {
+    public Boolean isInTable() {
         return isInTable;
     }
 
@@ -138,7 +138,7 @@ public class Paragraph {
         this.fontAlignment = fontAlignment;
     }
 
-    public Boolean getTableRowEnd() {
+    public Boolean isTableRowEnd() {
         return isTableRowEnd;
     }
 

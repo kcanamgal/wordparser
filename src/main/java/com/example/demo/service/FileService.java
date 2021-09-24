@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 @Service
 public class FileService {
@@ -45,12 +43,12 @@ public class FileService {
             e.printStackTrace();
         }
         String token = Long.toHexString(System.currentTimeMillis()) ;
-        storeFile(token,file,name);
+        storeFile(token, file, name);
         return new Token(token);
     }
 
 
-    public void storeFile(String token,MultipartFile filecontent,String name){
+    private void storeFile(String token,MultipartFile filecontent, String name) {
         String localUrl = FILE_PREFIX + token;
 
         OutputStream os = null;
@@ -74,16 +72,16 @@ public class FileService {
             }
             os = new FileOutputStream(tempFile.getPath() + File.separator + name);
             // 开始读取
+            assert inputStream != null;
             while ((len = inputStream.read(bs)) != -1) {
                 os.write(bs, 0, len);
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             // 完毕，关闭所有链接
             try {
+                assert os != null;
                 os.close();
                 inputStream.close();
             } catch (IOException e) {

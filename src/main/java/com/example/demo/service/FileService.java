@@ -28,12 +28,14 @@ public class FileService {
     public Token loadFile(MultipartFile file, String fileName) {
         String name = file.getOriginalFilename();
         assert name != null;
+        String token = Long.toHexString(System.currentTimeMillis()) ;
+        storeFile(token,file,name);
         String suffix = name.substring(name.lastIndexOf('.') + 1);
         try {
             switch (suffix) {
                 case "doc":
                 case "wps": HWPFUtils.parse(file.getInputStream()); break;
-                case "docx": XWPFUtils.parse(file.getInputStream()); break;
+                case "docx": XWPFUtils.parse(file.getInputStream(),token); break;
                 case "pdf": break;
                 default:
                     throw new RuntimeException(FILE_FORMAT_NOT_SUPPORTED);
@@ -42,8 +44,6 @@ public class FileService {
         catch (IOException e) {
             e.printStackTrace();
         }
-        String token = Long.toHexString(System.currentTimeMillis()) ;
-        storeFile(token, file, name);
         return new Token(token);
     }
 
@@ -92,6 +92,22 @@ public class FileService {
         File fileRes=new File("WPWPOI/results/"+localUrl);
         if(!fileRes.exists()){//如果文件夹不存在
             fileRes.mkdir();//创建文件夹
+        }
+        File parFile = new File("WPWPOI/results/"+localUrl+"/paragraphs");
+        if(!parFile.exists()){//如果文件夹不存在
+            parFile.mkdir();//创建文件夹
+        }
+        File picFile = new File("WPWPOI/results/"+localUrl+"/pics");
+        if(!picFile.exists()){//如果文件夹不存在
+            picFile.mkdir();//创建文件夹
+        }
+        File tabFile = new File("WPWPOI/results/"+localUrl+"/tables");
+        if(!tabFile.exists()){//如果文件夹不存在
+            tabFile.mkdir();//创建文件夹
+        }
+        File tilFile = new File("WPWPOI/results/"+localUrl+"/titles");
+        if(!tilFile.exists()){//如果文件夹不存在
+            tilFile.mkdir();//创建文件夹
         }
     }
 

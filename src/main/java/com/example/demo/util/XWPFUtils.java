@@ -3,6 +3,11 @@ package com.example.demo.util;
 import com.example.demo.VO.Paragraph;
 import com.example.demo.VO.Picture;
 import com.example.demo.VO.Table;
+import com.example.demo.service.FileService;
+import org.apache.poi.xwpf.usermodel.IBodyElement;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.*;
 import sun.misc.BASE64Encoder;
 
@@ -42,11 +47,11 @@ public class XWPFUtils {
     private XWPFUtils() { }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void parse(InputStream is) throws IOException {
+    public static void parse(InputStream is,String token) throws IOException {
         XWPFDocument xwpfDocument = new XWPFDocument(is);
         List<IBodyElement> elements = xwpfDocument.getBodyElements();
         List result = new ArrayList();
-        int i = 0, n = elements.size(); boolean isTable = false;
+        int i = 0, n = elements.size(); boolean isTable = false; int j=0;
 
 
         while (i < n) {
@@ -74,6 +79,9 @@ public class XWPFUtils {
                     }
                     Paragraph paragraph = new Paragraph();
                     fill(xwpfParagraph, paragraph, false);
+                    String fileName = IOUtils.getFilePrefix() + token + "/paragraphs/" + j;
+                    IOUtils.saveDataToFile(fileName,paragraph);
+                    j++;
                     if (isTable) {
                         int k = result.size() - 1;
                         Table table = (Table) result.get(k);
@@ -100,6 +108,9 @@ public class XWPFUtils {
                             for (XWPFParagraph cParagraph: cellParagraphs) {
                                 Paragraph p = new Paragraph();
                                 fill(cParagraph, p, true);
+                                String fileName = IOUtils.getFilePrefix() + token + "/paragraphs/" + j;
+                                IOUtils.saveDataToFile(fileName,p);
+                                j++;
                             }
                         }
                     }

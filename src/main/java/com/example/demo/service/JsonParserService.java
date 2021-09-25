@@ -15,4 +15,8 @@ public class JsonParserService {
         String json = FileUtils.readFileToString(jsonFile);
         return JSON.parse(json);
     }
+    public int transFileNameToInt(String fileName){
+        String fileNum = fileName.substring(0,fileName.length()-5);
+        return Integer.parseInt(fileNum);
+    }
 }

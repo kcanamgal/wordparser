@@ -50,15 +50,15 @@ public class IOUtils {
         String titles_filename = FILE_PREFIX + token + "/titles/";
 
         for(int i=0;i<paragraphs.size();i++){
-            String tmpName = paragraph_filename + i;
+            String tmpName = paragraph_filename + paragraphs.get(i).getParagraphId();
             saveDataToFile(tmpName,paragraphs.get(i));
         }
         for(int i=0;i<fonts.size();i++){
-            String tmpName = font_sytpe_filename + i;
+            String tmpName = font_sytpe_filename + fonts.get(i).get(0).getParagraphId();
             saveDataToFile(tmpName,fonts.get(i));
         }
         for(int i=0;i<paragraph_stypes.size();i++){
-            String tmpName = paragraph_stype_filename + i;
+            String tmpName = paragraph_stype_filename + paragraph_stypes.get(i).getParagraphId();
             saveDataToFile(tmpName,paragraph_stypes.get(i));
         }
         for(int i=0;i<pictures.size();i++){

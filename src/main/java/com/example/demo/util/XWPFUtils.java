@@ -198,7 +198,7 @@ public class XWPFUtils {
 
         private void fill(final XWPFParagraph xwpfParagraph , final Paragraph paragraph, boolean inTable) {
             Paragraph_stype stype = extractParagraphStype(xwpfParagraph);
-
+            stype.setParagraphId(paragraph.getParagraphId());
             paragraph.setIndentFromRight(stype.getIndentFromRight());
             paragraph.setIndentFromLeft(stype.getIndentFromLeft());
             paragraph.setFirstLineIndent(stype.getFirstLineIndent());
@@ -218,9 +218,11 @@ public class XWPFUtils {
                String color = run.getColor();
                font.setColor(color == null? 0: Integer.parseUnsignedInt(color, 16));
                font.setBold(run.isBold());
+               font.setParagraphId(paragraph.getParagraphId());
                font_stypes.add(font);
             }
             this.fonts.add(new ArrayList<>(font_stypes));
+            System.out.println(font_stypes.size());
             paragraph.setFontName(font_stypes.stream().map(Font_stype::getFontName).collect(Collectors.toList()));
             paragraph.setFontSize(font_stypes.stream().map(Font_stype::getFontSize).collect(Collectors.toList()));
             paragraph.setItalic(font_stypes.stream().map(Font_stype::isItalic).collect(Collectors.toList()));

@@ -132,14 +132,23 @@ public final class HWPFUtils {
             IOUtils.saveParserResult(paragraphs,tables,titles,fonts,picModels,paragraph_stypes,token);
         }
 
-        private static void fill(org.apache.poi.hwpf.usermodel.Paragraph paragraph, com.example.demo.VO.Paragraph paragraphModel) {
-            paragraphModel.setLvl(paragraph.getLvl());
-            paragraphModel.setLineSpacing((double) paragraph.getLineSpacing().toInt());
-            paragraphModel.setFirstLineIndent(paragraph.getFirstLineIndent());
-            paragraphModel.setIndentFromLeft(paragraph.getIndentFromLeft());
-            paragraphModel.setIndentFromRight(paragraph.getIndentFromRight());
+        private void fill(org.apache.poi.hwpf.usermodel.Paragraph paragraph, com.example.demo.VO.Paragraph paragraphModel) {
+            Paragraph_stype stype = new Paragraph_stype();
+            stype.setFirstLineIndent(paragraph.getFirstLineIndent());
+            stype.setIndentFromLeft(paragraph.getIndentFromLeft());
+            stype.setIndentFromRight(paragraph.getIndentFromRight());
+            stype.setLineSpacing((double) paragraph.getLineSpacing().toInt());
+            stype.setLvl(paragraph.getLvl());
+            stype.setParagraphId(paragraphModel.getParagraphId());
+            this.paragraph_stypes.add(stype);
+            paragraphModel.setLvl(stype.getLvl());
+            paragraphModel.setLineSpacing(stype.getLineSpacing());
+            paragraphModel.setFirstLineIndent(stype.getFirstLineIndent());
+            paragraphModel.setIndentFromLeft(stype.getIndentFromLeft());
+            paragraphModel.setIndentFromRight(stype.getIndentFromRight());
             paragraphModel.setParagraphText(paragraph.text());
             paragraphModel.setInTable(paragraph.isInTable());
+
         }
 
         private static Font_stype extractFont(CharacterRun run) {
@@ -180,6 +189,7 @@ public final class HWPFUtils {
                 else {
                     Font_stype font = extractFont(run);
                     font.setFontAlignment(paragraph.getFontAlignment());
+                    font.setParagraphId(paragraphModel.getParagraphId());
                     font_stypes.add(font);
                     textBefore = run.text();
                     // 回填picture

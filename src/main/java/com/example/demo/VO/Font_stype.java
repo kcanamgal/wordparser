@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigInteger;
 import java.util.Objects;
 
 @ApiModel("字体格式")
@@ -15,6 +16,9 @@ import java.util.Objects;
 @Getter
 @Setter
 public class Font_stype {
+    @ApiModelProperty("段落编号")
+    private BigInteger paragraphId;
+
     @ApiModelProperty("颜色")
     private Integer color;
 
@@ -32,6 +36,14 @@ public class Font_stype {
 
     @ApiModelProperty("字间距")
     private Integer fontAlignment;
+
+    public BigInteger getParagraphId() {
+        return paragraphId;
+    }
+
+    public void setParagraphId(BigInteger paragraphId) {
+        this.paragraphId = paragraphId;
+    }
 
     public Integer getColor() {
         return color;

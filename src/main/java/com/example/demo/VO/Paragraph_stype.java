@@ -7,12 +7,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigInteger;
+
 @ApiModel("段落格式")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class Paragraph_stype {
+    @ApiModelProperty("段落编号")
+    private BigInteger paragraphId;
+
     @ApiModelProperty("行距")
     private Double lineSpacing;
 
@@ -27,6 +32,14 @@ public class Paragraph_stype {
 
     @ApiModelProperty("大纲级别")
     private Integer lvl;
+
+    public BigInteger getParagraphId() {
+        return paragraphId;
+    }
+
+    public void setParagraphId(BigInteger paragraphId) {
+        this.paragraphId = paragraphId;
+    }
 
     public Double getLineSpacing() {
         return lineSpacing;

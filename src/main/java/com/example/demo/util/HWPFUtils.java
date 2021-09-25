@@ -203,7 +203,9 @@ public final class HWPFUtils {
             paragraphModel.setItalic(font_stypes.stream().map(Font_stype::isItalic).collect(Collectors.toList()));
             paragraphModel.setFontSize(font_stypes.stream().map(Font_stype::getFontSize).collect(Collectors.toList()));
             paragraphModel.setFontName(font_stypes.stream().map(Font_stype::getFontName).collect(Collectors.toList()));
-            fonts.add(new ArrayList<>(font_stypes));
+            if(font_stypes.size()>0){
+                fonts.add(new ArrayList<>(font_stypes));
+            }
             fill(paragraph, paragraphModel);
             return textBefore;
         }

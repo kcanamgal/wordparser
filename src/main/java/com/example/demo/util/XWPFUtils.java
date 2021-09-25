@@ -221,7 +221,9 @@ public class XWPFUtils {
                font.setParagraphId(paragraph.getParagraphId());
                font_stypes.add(font);
             }
-            this.fonts.add(new ArrayList<>(font_stypes));
+            if(font_stypes.size()>0){
+                this.fonts.add(new ArrayList<>(font_stypes));
+            }
             System.out.println(font_stypes.size());
             paragraph.setFontName(font_stypes.stream().map(Font_stype::getFontName).collect(Collectors.toList()));
             paragraph.setFontSize(font_stypes.stream().map(Font_stype::getFontSize).collect(Collectors.toList()));

@@ -32,13 +32,18 @@ public class ParserController {
     @GetMapping("/{token}/all_paragraphs")
     public RestResult getAllParagraphs(
             @Parameter(description = "文档的唯一标识token") @PathVariable String token) {
+        try{
         String localUrl = "WPWPOI/results/parser_legal_Instrument_" + token + "/paragraphs/paragraph";
         jsonContent = new ArrayList<>();
+        List<Integer> nameList = new ArrayList<>();
         File file = new File(localUrl);		//获取其file对象
         File[] fs = file.listFiles();	//遍历path下的文件和目录，放在File数组中
-        try{
             for(int x=0;x<fs.length;x++){
-                jsonContent.add(jsonParserService.jsonToObject(localUrl + "/" + x + ".json"));
+                nameList.add(jsonParserService.transFileNameToInt(fs[x].getName()));
+            }
+            Collections.sort(nameList);
+            for(int x=0;x<fs.length;x++){
+                jsonContent.add(jsonParserService.jsonToObject(localUrl + "/" + nameList.get(x) + ".json"));
             }
         }catch (NullPointerException | IOException e){
             throw new RequestParamException("Token not found");
@@ -170,8 +175,9 @@ public class ParserController {
         try{
             String localUrl = "WPWPOI/results/parser_legal_Instrument_" + token + "/titles";
             String localUrl2 = "WPWPOI/results/parser_legal_Instrument_" + token + "/paragraphs/paragraph";
-            List<Integer> nameList = new ArrayList<>();
             jsonContent = new ArrayList<>();
+            List<Integer> nameList = new ArrayList<>();
+            List<Integer> nameList2 = new ArrayList<>();
             File file = new File(localUrl);		//获取其file对象
             File[] fs = file.listFiles();	    //遍历path下的文件和目录，放在File数组中
             File file2 = new File(localUrl2);		//获取其file对象
@@ -179,17 +185,36 @@ public class ParserController {
             for(int x=0;x<fs.length;x++){
                 nameList.add(jsonParserService.transFileNameToInt(fs[x].getName()));
             }
+            for(int x=0;x<fs2.length;x++){
+                nameList2.add(jsonParserService.transFileNameToInt(fs2[x].getName()));
+            }
             Collections.sort(nameList);
-            int begin = nameList.get(nameList.indexOf(Integer.parseInt(paragraph_id)));;
-            int end = fs2.length;
+            Collections.sort(nameList2);
+            int begin;
+            try{
+                begin = nameList.get(nameList.indexOf(Integer.parseInt(paragraph_id)));
+            }catch (ArrayIndexOutOfBoundsException | NullPointerException e){
+                throw new RequestParamException("paragraph_id not found");
+            }
+            int end = nameList2.get(nameList2.size()-1);
             if (nameList.indexOf(begin)!=nameList.size()-1){
                 end = nameList.get(nameList.indexOf(begin)+1);
             }
             System.out.println(begin);
             System.out.println(end);
-            for(int x=begin+1;x<end;x++){
-                System.out.println(x);
-                jsonContent.add(jsonParserService.jsonToObject(localUrl2 + "/" + x + ".json"));
+            int i=0,j=0;
+            while(nameList2.get(i)<=begin){
+                i++;
+            }
+            while(nameList2.get(j)<end){
+                j++;
+                if(nameList2.get(j)==end){
+                    j++;
+                    break;
+                }
+            }
+            for(int x=i;x<j;x++){
+                jsonContent.add(jsonParserService.jsonToObject(localUrl2 + "/" + nameList2.get(x) + ".json"));
             }
             return RestResult.success(jsonContent);
         }catch (NullPointerException | IOException e){
@@ -202,8 +227,54 @@ public class ParserController {
     public RestResult getTitlePictures (
             @Parameter(description = "文档的唯一标识token") @PathVariable String token,
             @Parameter(description = "段落id") @PathVariable String paragraph_id) throws IOException {
-        String localUrl = "WPWPOI/results/test1.json";
-        return RestResult.success(jsonParserService.jsonToObject(localUrl));
+        try{
+            String localUrl = "WPWPOI/results/parser_legal_Instrument_" + token + "/titles";
+            String localUrl2 = "WPWPOI/results/parser_legal_Instrument_" + token + "/pics";
+            jsonContent = new ArrayList<>();
+            List<Integer> nameList = new ArrayList<>();
+            List<Integer> nameList2 = new ArrayList<>();
+            File file = new File(localUrl);		//获取其file对象
+            File[] fs = file.listFiles();	    //遍历path下的文件和目录，放在File数组中
+            File file2 = new File(localUrl2);		//获取其file对象
+            File[] fs2 = file2.listFiles();	//遍历path下的文件和目录，放在File数组中
+            for(int x=0;x<fs.length;x++){
+                nameList.add(jsonParserService.transFileNameToInt(fs[x].getName()));
+            }
+            for(int x=0;x<fs2.length;x++){
+                nameList2.add(jsonParserService.transFileNameToInt(fs2[x].getName()));
+            }
+            Collections.sort(nameList);
+            Collections.sort(nameList2);
+            int begin;
+            try{
+                begin = nameList.get(nameList.indexOf(Integer.parseInt(paragraph_id)));
+            }catch (ArrayIndexOutOfBoundsException | NullPointerException e){
+                throw new RequestParamException("paragraph_id not found");
+            }
+            int end = nameList2.get(nameList2.size()-1);
+            if (nameList.indexOf(begin)!=nameList.size()-1){
+                end = nameList.get(nameList.indexOf(begin)+1);
+            }
+            System.out.println(begin);
+            System.out.println(end);
+            int i=0,j=0;
+            while(nameList2.get(i)<=begin){
+                i++;
+            }
+            while(nameList2.get(j)<end){
+                j++;
+                if(nameList2.get(j)==end){
+                    j++;
+                    break;
+                }
+            }
+            for(int x=i;x<j;x++){
+                jsonContent.add(jsonParserService.jsonToObject(localUrl2 + "/" + nameList2.get(x) + ".json"));
+            }
+            return RestResult.success(jsonContent);
+        }catch (NullPointerException | IOException e){
+            throw new RequestParamException("Token or paragraph_id not found");
+        }
     }
 
     @Operation(summary = "根据token、标题对应的段落id，获取标题下全部表格信息")
@@ -211,15 +282,115 @@ public class ParserController {
     public RestResult getTitleTables (
             @Parameter(description = "文档的唯一标识token") @PathVariable String token,
             @Parameter(description = "段落id") @PathVariable String paragraph_id) throws IOException {
-        String localUrl = "WPWPOI/results/test1.json";
-        return RestResult.success(jsonParserService.jsonToObject(localUrl));
+        try{
+            String localUrl = "WPWPOI/results/parser_legal_Instrument_" + token + "/titles";
+            String localUrl2 = "WPWPOI/results/parser_legal_Instrument_" + token + "/tables";
+            jsonContent = new ArrayList<>();
+            List<Integer> nameList = new ArrayList<>();
+            List<Integer> nameList2 = new ArrayList<>();
+            File file = new File(localUrl);		//获取其file对象
+            File[] fs = file.listFiles();	    //遍历path下的文件和目录，放在File数组中
+            File file2 = new File(localUrl2);		//获取其file对象
+            File[] fs2 = file2.listFiles();	//遍历path下的文件和目录，放在File数组中
+            for(int x=0;x<fs.length;x++){
+                nameList.add(jsonParserService.transFileNameToInt(fs[x].getName()));
+            }
+            for(int x=0;x<fs2.length;x++){
+                nameList2.add(jsonParserService.transFileNameToInt(fs2[x].getName()));
+            }
+            Collections.sort(nameList);
+            Collections.sort(nameList2);
+            int begin;
+            try{
+                begin = nameList.get(nameList.indexOf(Integer.parseInt(paragraph_id)));
+            }catch (ArrayIndexOutOfBoundsException | NullPointerException e){
+                throw new RequestParamException("paragraph_id not found");
+            }
+            int end = nameList2.get(nameList2.size()-1);
+            if (nameList.indexOf(begin)!=nameList.size()-1){
+                end = nameList.get(nameList.indexOf(begin)+1);
+            }
+            System.out.println(begin);
+            System.out.println(end);
+            int i=0,j=0;
+            while(nameList2.get(i)<=begin){
+                i++;
+            }
+            while(nameList2.get(j)<end){
+                j++;
+                if(nameList2.get(j)==end){
+                    j++;
+                    break;
+                }
+            }
+            for(int x=i;x<j;x++){
+                jsonContent.add(jsonParserService.jsonToObject(localUrl2 + "/" + nameList2.get(x) + ".json"));
+            }
+            return RestResult.success(jsonContent);
+        }catch (NullPointerException | IOException e){
+            throw new RequestParamException("Token or paragraph_id not found");
+        }
     }
 
     @Operation(summary = "根据token释放服务端资源，" +
             "也就是用户对解析内容进行主动删除，防止由于解析文件逐渐增多，出现内存不足")
     @DeleteMapping("/{token}")
-    public Boolean delete (
+    public RestResult delete (
             @Parameter(description = "文档的唯一标识token") @PathVariable String token) {
-        return null;
+        String localUrl = "WPWPOI/files/parser_legal_Instrument_" + token;
+        String localUrl2 = "WPWPOI/results/parser_legal_Instrument_" + token;
+        File file = new File(localUrl);		//获取其file对象
+        File file2 = new File(localUrl2);
+        if(!file.exists()&&!file2.exists()){
+            throw new RequestParamException("Token not found");
+        }
+        try{
+            delFolder(localUrl);
+            delFolder(localUrl2);
+            return RestResult.success("Delete Success");
+        }catch (NullPointerException e){
+            throw new RequestParamException("Token not found");
+        }
+    }
+
+    public static void delFolder(String folderPath) {
+        try {
+            delAllFile(folderPath); //删除完里面所有内容
+            String filePath = folderPath;
+            filePath = filePath.toString();
+            java.io.File myFilePath = new java.io.File(filePath);
+            myFilePath.delete(); //删除空文件夹
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean delAllFile(String path) {
+        boolean flag = false;
+        File file = new File(path);
+        if (!file.exists()) {
+            return flag;
+        }
+        if (!file.isDirectory()) {
+            return flag;
+        }
+        String[] tempList = file.list();
+        File temp = null;
+        for (int i = 0; i < tempList.length; i++) {
+            if (path.endsWith(File.separator)) {
+                temp = new File(path + tempList[i]);
+            } else {
+                temp = new File(path + File.separator + tempList[i]);
+            }
+            if (temp.isFile()) {
+                temp.delete();
+            }
+            if (temp.isDirectory()) {
+                delAllFile(path + "/" + tempList[i]);//先删除文件夹里面的文件
+                delFolder(path + "/" + tempList[i]);//再删除空文件夹
+                flag = true;
+            }
+        }
+        return flag;
     }
 }

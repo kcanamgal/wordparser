@@ -16,6 +16,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public final class HWPFUtils {
+    private static byte JC_LEFT = 0;
+    private static byte JC_CENTER = 1;
+    private static byte JC_RIGHT = 2;
 
     private HWPFUtils() { }
 
@@ -48,19 +51,7 @@ public final class HWPFUtils {
         }
 
         static boolean isTitle(Paragraph paragraph) {
-            LineSpacingDescriptor lineSpacingDescriptor = paragraph.getLineSpacing();
-            int ilfo = paragraph.getIlfo();
-            boolean isKinsoku = paragraph.isKinsoku();
-            short style = paragraph.getStyleIndex();
-            ParagraphProperties properties = paragraph.getProps();
-            int left = properties.getLeftBorder().toInt();
-            int right = properties.getRightBorder().toInt();
-            boolean isLineNotNumbered = properties.isLineNotNumbered();
-            boolean isBackward = properties.isBackward();
-            boolean isVertical = properties.isVertical();
-            boolean keepWithNext = properties.keepWithNext();
-            boolean isSideBySide = properties.isSideBySide();
-            return false;
+            return paragraph.getProps().getJc() == JC_CENTER;
         }
 
         static Title extractAsTitle(Paragraph paragraph, int defaultId) {
@@ -78,7 +69,7 @@ public final class HWPFUtils {
         void parse() {
             Range r = hwpfDocument.getRange();
             com.example.demo.VO.Paragraph paragraph; Paragraph p, previousParagraph = null;
-            int j=0;
+            String textBefore = null;
 
             for (int i = 0, n = r.numParagraphs(); i < n; i++) {
                 p = r.getParagraph(i);
@@ -94,7 +85,7 @@ public final class HWPFUtils {
                 else {
                     paragraph = new com.example.demo.VO.Paragraph();
                     paragraph.setParagraphId(BigInteger.valueOf(i));
-                    parseToModel(p, paragraph);
+                    textBefore = parseToModel(p, paragraph, textBefore);
 
                     if (!paragraph.isInTable()) {
                         paragraphs.add(paragraph);
@@ -118,13 +109,13 @@ public final class HWPFUtils {
                             p = r.getParagraph(++i);
                             paragraph = new com.example.demo.VO.Paragraph();
                             paragraph.setParagraphId(BigInteger.valueOf(i));
-                            parseToModel(p, paragraph);
+                            textBefore = parseToModel(p, paragraph, textBefore);
                             paragraphs.add(paragraph);
                         } while (p.isInTable());
                         table.setTableContent(r.getTable(firstInTable).text());
                         table.setParagraphAfter(paragraph.getParagraphId());
                         table.setTextAfter(paragraph.getParagraphText());
-
+                        tables.add(table);
                     }
                 }
 
@@ -171,27 +162,32 @@ public final class HWPFUtils {
             return pictureModel;
         }
 
-        private void parseToModel(Paragraph paragraph, com.example.demo.VO.Paragraph paragraphModel) {
+        private String parseToModel(Paragraph paragraph, com.example.demo.VO.Paragraph paragraphModel, String textBefore) {
             int numRuns = paragraph.numCharacterRuns();
-            CharacterRun run, previousRun = null;
+            CharacterRun run;
             Set<Font_stype> font_stypes = new HashSet<>();
+            int traceBack = 0, n = this.picModels.size();
+            while (traceBack < n && this.picModels.get(n - traceBack - 1).getTextAfter() == null) traceBack++;
             for (int j = 0; j < numRuns; j++) {
                 run = paragraph.getCharacterRun(j);
                 if (picturesTable.hasPicture(run)) {
                     Picture picture = pictures.get(run.getPicOffset());
                     com.example.demo.VO.Picture pictureModel = extractPicture(picture);
-                    pictureModel.setTextBefore(previousRun.text());
+                    pictureModel.setTextBefore(textBefore);
                     picModels.add(pictureModel);
+                    traceBack++;
                 }
                 else {
                     Font_stype font = extractFont(run);
                     font.setFontAlignment(paragraph.getFontAlignment());
                     font_stypes.add(font);
-
+                    textBefore = run.text();
                     // 回填picture
-
+                    while (traceBack > 0) {
+                        com.example.demo.VO.Picture picture = picModels.get(picModels.size() - (traceBack--));
+                        picture.setTextAfter(textBefore);
+                    }
                 }
-                previousRun = run;
             }
             paragraphModel.setBold(font_stypes.stream().map(Font_stype::isBold).collect(Collectors.toList()));
             paragraphModel.setItalic(font_stypes.stream().map(Font_stype::isItalic).collect(Collectors.toList()));
@@ -199,6 +195,7 @@ public final class HWPFUtils {
             paragraphModel.setFontName(font_stypes.stream().map(Font_stype::getFontName).collect(Collectors.toList()));
             fonts.add(new ArrayList<>(font_stypes));
             fill(paragraph, paragraphModel);
+            return textBefore;
         }
     }
 }

@@ -39,12 +39,10 @@ public class XWPFUtils {
 
     public static void parse(InputStream is,String token) throws IOException {
         new XWPFHelper(is).parseAndWrite(token);
-
     }
 
     private static class XWPFHelper {
         XWPFDocument xwpfDocument;
-        String token;
         List<Paragraph> paragraphs = new ArrayList<>();
         List<Table> tables = new ArrayList<>();
         List<Title> titles = new ArrayList<>();
@@ -66,7 +64,7 @@ public class XWPFUtils {
                     case PARAGRAPH: {
                         XWPFParagraph xwpfParagraph = (XWPFParagraph) bodyElement;
                         String text = xwpfParagraph.getParagraphText();
-                        StringBuilder sb = new StringBuilder();
+//                        StringBuilder sb = new StringBuilder();
                         int lastPics = 0;
                         /*
                          * 图片处理

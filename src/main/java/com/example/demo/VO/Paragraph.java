@@ -41,7 +41,7 @@ public class Paragraph {
     private Integer lvl;
 
     @ApiModelProperty("行距")
-    private Integer lineSpacing;
+    private Double lineSpacing;
 
     @ApiModelProperty("字间距")
     private Integer fontAlignment;
@@ -122,11 +122,11 @@ public class Paragraph {
         this.lvl = lvl;
     }
 
-    public Integer getLineSpacing() {
+    public Double getLineSpacing() {
         return lineSpacing;
     }
 
-    public void setLineSpacing(Integer lineSpacing) {
+    public void setLineSpacing(Double lineSpacing) {
         this.lineSpacing = lineSpacing;
     }
 

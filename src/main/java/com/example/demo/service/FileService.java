@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.VO.Token;
+import com.example.demo.exceptions.RequestParamException;
 import com.example.demo.util.HWPFUtils;
 import com.example.demo.util.XWPFUtils;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class FileService {
                 case "docx": XWPFUtils.parse(file.getInputStream(),token); break;
                 case "pdf": break;
                 default:
-                    throw new RuntimeException(FILE_FORMAT_NOT_SUPPORTED);
+                    throw new RequestParamException(FILE_FORMAT_NOT_SUPPORTED);
             }
         }
         catch (IOException e) {

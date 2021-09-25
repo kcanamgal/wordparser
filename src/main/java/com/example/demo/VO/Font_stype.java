@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @ApiModel("字体格式")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class Font_stype {
     private Integer color;
 
     @ApiModelProperty("字体大小")
-    private Integer fontSize;
+    private Double fontSize;
 
     @ApiModelProperty("字体名")
     private String fontName;
@@ -39,11 +41,11 @@ public class Font_stype {
         this.color = color;
     }
 
-    public Integer getFontSize() {
+    public Double getFontSize() {
         return fontSize;
     }
 
-    public void setFontSize(Integer fontSize) {
+    public void setFontSize(Double fontSize) {
         this.fontSize = fontSize;
     }
 
@@ -77,5 +79,23 @@ public class Font_stype {
 
     public void setFontAlignment(Integer fontAlignment) {
         this.fontAlignment = fontAlignment;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Font_stype that = (Font_stype) o;
+        return Objects.equals(color, that.color) &&
+                Objects.equals(fontSize, that.fontSize) &&
+                Objects.equals(fontName, that.fontName) &&
+                Objects.equals(isBold, that.isBold) &&
+                Objects.equals(isItalic, that.isItalic) &&
+                Objects.equals(fontAlignment, that.fontAlignment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, fontSize, fontName, isBold, isItalic, fontAlignment);
     }
 }

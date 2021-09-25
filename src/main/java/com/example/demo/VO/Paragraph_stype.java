@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class Paragraph_stype {
     @ApiModelProperty("行距")
-    private Integer lineSpacing;
+    private Double lineSpacing;
 
     @ApiModelProperty("左方缩排")
     private Integer indentFromLeft;
@@ -28,11 +28,11 @@ public class Paragraph_stype {
     @ApiModelProperty("大纲级别")
     private Integer lvl;
 
-    public Integer getLineSpacing() {
+    public Double getLineSpacing() {
         return lineSpacing;
     }
 
-    public void setLineSpacing(Integer lineSpacing) {
+    public void setLineSpacing(Double lineSpacing) {
         this.lineSpacing = lineSpacing;
     }
 

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigInteger;
+
 @ApiModel("图片")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +35,17 @@ public class Picture {
 
     @ApiModelProperty("文件名")
     private String filename;
+
+    @ApiModelProperty("段落编号")
+    private BigInteger paragraphId;
+
+    public BigInteger getParagraphId() {
+        return paragraphId;
+    }
+
+    public void setParagraphId(BigInteger paragraphId) {
+        this.paragraphId = paragraphId;
+    }
 
     public String getTextBefore() {
         return textBefore;

@@ -37,12 +37,14 @@ public class XWPFUtils {
 
     private XWPFUtils() { }
 
-    public static void parse(InputStream is) throws IOException {
-        new XWPFHelper(is).parseAndWrite();
+    public static void parse(InputStream is,String token) throws IOException {
+        new XWPFHelper(is).parseAndWrite(token);
+
     }
 
     private static class XWPFHelper {
         XWPFDocument xwpfDocument;
+        String token;
         List<Paragraph> paragraphs = new ArrayList<>();
         List<Table> tables = new ArrayList<>();
         List<Title> titles = new ArrayList<>();
@@ -94,12 +96,13 @@ public class XWPFUtils {
                                     pic.setSuggestFileExtension(picture.getPictureData().suggestFileExtension());
                                     pic.setBase64Content(new BASE64Encoder().encode(picture.getPictureData().getData()));
                                     pic.setTextBefore(textBefore);
+                                    pic.setParagraphId(BigInteger.valueOf(count));
                                     this.pictures.add(pic);
                                 }
                             }
                         }
 
-                        if (xwpfParagraph.getAlignment() == POSSIBLE_TITLE) {
+                        if (xwpfParagraph.getAlignment() == POSSIBLE_TITLE || xwpfParagraph.getStyle()!=null) {
                             Title title = new Title();
                             title.setParagraphId(BigInteger.valueOf(count++));
                             fill(xwpfParagraph, title);
@@ -115,7 +118,7 @@ public class XWPFUtils {
                             int k = tables.size() - 1;
                             Table table = tables.get(k);
                             table.setTextAfter(text);
-                            table.setParagraphAfter(xwpfParagraph.getNumID());
+                            table.setParagraphAfter(BigInteger.valueOf(count - 1));
                         }
                         // 二度回填textAfter
                         if (lastPics > 0) {
@@ -130,6 +133,8 @@ public class XWPFUtils {
                         XWPFTable xwpfTable = (XWPFTable) bodyElement;
                         Table tb = new Table();
                         tb.setTableContent(xwpfTable.getText());
+                        tb.setTextBefore(textBefore);
+                        tb.setParagraphBefore(BigInteger.valueOf(count - 1));
                         /*
                          * 对在表格中的段落进行提取
                          */
@@ -148,7 +153,7 @@ public class XWPFUtils {
                                 }
                             }
                         }
-                        tb.setTextBefore(textBefore);
+
                         tables.add(tb);
                         isTable = true;
                         textBefore = finalText;
@@ -159,15 +164,16 @@ public class XWPFUtils {
                 }
                 i++;
             }
+
         }
 
-        void parseAndWrite() {
+        void parseAndWrite(String token) {
             parse();
-            write();
+            write(token);
         }
 
-        void write() {
-
+        void write(String token) {
+            IOUtils.saveParserResult(paragraphs,tables,titles,fonts,pictures,paragraph_stypes,token);
         }
 
         private void fill(XWPFParagraph titleParagraph, Title title) {

@@ -19,8 +19,8 @@ public final class HWPFUtils {
 
     private HWPFUtils() { }
 
-    public static void parse(InputStream is) throws IOException {
-        new HWPFHelper(is).parse();
+    public static void parse(InputStream is,String token) throws IOException {
+        new HWPFHelper(is).parseAndWrite(token);
     }
 
     private static class HWPFHelper {
@@ -32,6 +32,7 @@ public final class HWPFUtils {
         List<com.example.demo.VO.Picture> picModels = new ArrayList<>();
         List<Title> titles = new ArrayList<>();
         List<Paragraph_stype> paragraph_stypes = new ArrayList<>();
+        List<Table> tables = new ArrayList<>();
 
         HWPFHelper(InputStream is) throws IOException {
             hwpfDocument = new HWPFDocument(is);
@@ -77,6 +78,7 @@ public final class HWPFUtils {
         void parse() {
             Range r = hwpfDocument.getRange();
             com.example.demo.VO.Paragraph paragraph; Paragraph p, previousParagraph = null;
+            int j=0;
 
             for (int i = 0, n = r.numParagraphs(); i < n; i++) {
                 p = r.getParagraph(i);
@@ -128,6 +130,15 @@ public final class HWPFUtils {
 
                 previousParagraph = p;
             }
+        }
+
+        void parseAndWrite(String token) {
+            parse();
+            write(token);
+        }
+
+        void write(String token) {
+            IOUtils.saveParserResult(paragraphs,tables,titles,fonts,picModels,paragraph_stypes,token);
         }
 
         private static void fill(org.apache.poi.hwpf.usermodel.Paragraph paragraph, com.example.demo.VO.Paragraph paragraphModel) {

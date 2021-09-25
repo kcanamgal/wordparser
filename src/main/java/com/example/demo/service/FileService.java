@@ -35,9 +35,12 @@ public class FileService {
         try {
             switch (suffix) {
                 case "doc":
-                case "wps": HWPFUtils.parse(file.getInputStream()); break;
-                case "docx": XWPFUtils.parse(file.getInputStream(),token); break;
-                case "pdf": break;
+                case "wps":
+                    HWPFUtils.parse(file.getInputStream(),token); break;
+                case "docx":
+                    XWPFUtils.parse(file.getInputStream(),token); break;
+                case "pdf":
+                    break;
                 default:
                     throw new RequestParamException(FILE_FORMAT_NOT_SUPPORTED);
             }
@@ -97,6 +100,18 @@ public class FileService {
         File parFile = new File("WPWPOI/results/"+localUrl+"/paragraphs");
         if(!parFile.exists()){//如果文件夹不存在
             parFile.mkdir();//创建文件夹
+        }
+        File parParFile = new File("WPWPOI/results/"+localUrl+"/paragraphs/paragraph");
+        if(!parParFile.exists()){//如果文件夹不存在
+            parParFile.mkdir();//创建文件夹
+        }
+        File parFonFile = new File("WPWPOI/results/"+localUrl+"/paragraphs/font_stype");
+        if(!parFonFile.exists()){//如果文件夹不存在
+            parFonFile.mkdir();//创建文件夹
+        }
+        File parStyFile = new File("WPWPOI/results/"+localUrl+"/paragraphs/paragraph_stype");
+        if(!parStyFile.exists()){//如果文件夹不存在
+            parStyFile.mkdir();//创建文件夹
         }
         File picFile = new File("WPWPOI/results/"+localUrl+"/pics");
         if(!picFile.exists()){//如果文件夹不存在

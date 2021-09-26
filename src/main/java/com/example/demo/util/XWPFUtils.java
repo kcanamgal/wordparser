@@ -100,7 +100,7 @@ public class XWPFUtils {
                             }
                         }
 
-                        if (xwpfParagraph.getAlignment() == POSSIBLE_TITLE || xwpfParagraph.getStyle() != null) {
+                        if (xwpfParagraph.getAlignment() == POSSIBLE_TITLE) {
                             Title title = new Title();
                             title.setParagraphId(BigInteger.valueOf(count++));
                             fill(xwpfParagraph, title);
@@ -225,7 +225,6 @@ public class XWPFUtils {
             if(font_stypes.size() > 0){
                 this.fonts.add(new ArrayList<>(font_stypes));
             }
-            System.out.println(font_stypes.size());
             paragraph.setFontName(font_stypes.stream().map(Font_stype::getFontName).collect(Collectors.toList()));
             paragraph.setFontSize(font_stypes.stream().map(Font_stype::getFontSize).collect(Collectors.toList()));
             paragraph.setItalic(font_stypes.stream().map(Font_stype::isItalic).collect(Collectors.toList()));

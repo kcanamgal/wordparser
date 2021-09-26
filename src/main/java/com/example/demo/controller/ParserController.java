@@ -200,8 +200,6 @@ public class ParserController {
             if (nameList.indexOf(begin)!=nameList.size()-1){
                 end = nameList.get(nameList.indexOf(begin)+1);
             }
-            System.out.println(begin);
-            System.out.println(end);
             int i=0,j=0;
             while(nameList2.get(i)<=begin){
                 i++;
@@ -255,8 +253,6 @@ public class ParserController {
             if (nameList.indexOf(begin)!=nameList.size()-1){
                 end = nameList.get(nameList.indexOf(begin)+1);
             }
-            System.out.println(begin);
-            System.out.println(end);
             int i=0,j=0;
             while(nameList2.get(i)<=begin){
                 i++;
@@ -310,8 +306,6 @@ public class ParserController {
             if (nameList.indexOf(begin)!=nameList.size()-1){
                 end = nameList.get(nameList.indexOf(begin)+1);
             }
-            System.out.println(begin);
-            System.out.println(end);
             int i=0,j=0;
             while(nameList2.get(i)<=begin){
                 i++;

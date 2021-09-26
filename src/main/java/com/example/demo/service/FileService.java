@@ -3,7 +3,9 @@ package com.example.demo.service;
 import com.example.demo.VO.Token;
 import com.example.demo.exceptions.RequestParamException;
 import com.example.demo.util.HWPFUtils;
+import com.example.demo.util.XPDFUtils;
 import com.example.demo.util.XWPFUtils;
+import jdk.internal.util.xml.impl.Input;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,8 +33,8 @@ public class FileService {
         String name = file.getOriginalFilename();
         assert name != null;
         String token = Long.toHexString(System.currentTimeMillis()) ;
-        storeFile(token,file,name);
         String suffix = name.substring(name.lastIndexOf('.') + 1);
+        storeFile(token,file,name);
         try {
             switch (suffix) {
                 case "doc":
@@ -41,7 +43,7 @@ public class FileService {
                 case "docx":
                     XWPFUtils.parse(file.getInputStream(),token); break;
                 case "pdf":
-                    break;
+                    XPDFUtils.parse(file,token);break;
                 default:
                     throw new RequestParamException(FILE_FORMAT_NOT_SUPPORTED);
             }
@@ -95,6 +97,7 @@ public class FileService {
                 e.printStackTrace();
             }
         }
+
 
         File fileRes=new File("WPWPOI/results/"+localUrl);
         if(!fileRes.exists()){//如果文件夹不存在

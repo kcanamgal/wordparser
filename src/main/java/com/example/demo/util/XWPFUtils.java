@@ -100,7 +100,7 @@ public class XWPFUtils {
                             }
                         }
 
-                        if (xwpfParagraph.getAlignment() == POSSIBLE_TITLE || xwpfParagraph.getStyle()!=null) {
+                        if (xwpfParagraph.getAlignment() == POSSIBLE_TITLE || xwpfParagraph.getStyle() != null) {
                             Title title = new Title();
                             title.setParagraphId(BigInteger.valueOf(count++));
                             fill(xwpfParagraph, title);

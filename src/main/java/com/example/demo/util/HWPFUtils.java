@@ -182,6 +182,7 @@ public final class HWPFUtils {
                 if (picturesTable.hasPicture(run)) {
                     Picture picture = pictures.get(run.getPicOffset());
                     com.example.demo.VO.Picture pictureModel = extractPicture(picture);
+                    pictureModel.setParagraphId(paragraphModel.getParagraphId());
                     pictureModel.setTextBefore(textBefore);
                     picModels.add(pictureModel);
                     traceBack++;

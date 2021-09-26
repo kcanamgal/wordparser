@@ -55,7 +55,7 @@ public class FileService {
 
 
 
-    private void storeFile(String token,MultipartFile filecontent, String name) {
+    private void storeFile(String token, MultipartFile filecontent, String name) {
         String localUrl = FILE_PREFIX + token;
 
         OutputStream os = null;

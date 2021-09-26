@@ -56,7 +56,7 @@ public class XWPFUtils {
 
         void parse() {
             List<IBodyElement> elements = xwpfDocument.getBodyElements();
-            int i = 0, count = 0, n = elements.size(); boolean isTable = false;
+            int i = 0, count = 0, n = elements.size(), lastPics = 0; boolean isTable = false;
             String textBefore = null;
             while (i < n) {
                 IBodyElement bodyElement = elements.get(i);
@@ -64,8 +64,32 @@ public class XWPFUtils {
                     case PARAGRAPH: {
                         XWPFParagraph xwpfParagraph = (XWPFParagraph) bodyElement;
                         String text = xwpfParagraph.getParagraphText();
-//                        StringBuilder sb = new StringBuilder();
-                        int lastPics = 0;
+                        if (xwpfParagraph.getAlignment() == POSSIBLE_TITLE) {
+                            Title title = new Title();
+                            title.setParagraphId(BigInteger.valueOf(count++));
+                            fill(xwpfParagraph, title);
+                            titles.add(title);
+                        }
+                        else {
+                            Paragraph paragraph = new Paragraph();
+                            paragraph.setParagraphId(BigInteger.valueOf(count++));
+                            fill(xwpfParagraph, paragraph, false);
+                            paragraphs.add(paragraph);
+                        }
+                        // 二度回填textAfter
+                        if (lastPics > 0) {
+                            for (int pos = this.pictures.size() - lastPics; lastPics > 0; lastPics--, pos++) {
+                                Picture picture = this.pictures.get(pos);
+                                picture.setTextAfter(textBefore);
+                            }
+                        }
+                        if (isTable) {
+                            int k = tables.size() - 1;
+                            Table table = tables.get(k);
+                            table.setTextAfter(text.substring(0, text.indexOf('。') + 1));
+                            table.setParagraphAfter(BigInteger.valueOf(count - 1));
+                            isTable = false;
+                        }
                         /*
                          * 图片处理
                          * 遍历段落中所有run，获取其中的picture
@@ -74,7 +98,6 @@ public class XWPFUtils {
                         for (XWPFRun run: xwpfParagraph.getRuns()) {
                             List<XWPFPicture> pictures = run.getEmbeddedPictures();
                             if (pictures.size() == 0) {
-//                                sb.append(run);
                                 textBefore = run.text();
                                 // 回填textAfter
                                 if (lastPics > 0) {
@@ -94,35 +117,9 @@ public class XWPFUtils {
                                     pic.setSuggestFileExtension(picture.getPictureData().suggestFileExtension());
                                     pic.setBase64Content(new BASE64Encoder().encode(picture.getPictureData().getData()));
                                     pic.setTextBefore(textBefore);
-                                    pic.setParagraphId(BigInteger.valueOf(count));
+                                    pic.setParagraphId(BigInteger.valueOf(count - 1));
                                     this.pictures.add(pic);
                                 }
-                            }
-                        }
-
-                        if (xwpfParagraph.getAlignment() == POSSIBLE_TITLE) {
-                            Title title = new Title();
-                            title.setParagraphId(BigInteger.valueOf(count++));
-                            fill(xwpfParagraph, title);
-                            titles.add(title);
-                        }
-                        else {
-                            Paragraph paragraph = new Paragraph();
-                            fill(xwpfParagraph, paragraph, false);
-                            paragraph.setParagraphId(BigInteger.valueOf(count++));
-                            paragraphs.add(paragraph);
-                        }
-                        if (isTable) {
-                            int k = tables.size() - 1;
-                            Table table = tables.get(k);
-                            table.setTextAfter(text);
-                            table.setParagraphAfter(BigInteger.valueOf(count - 1));
-                        }
-                        // 二度回填textAfter
-                        if (lastPics > 0) {
-                            for (int pos = this.pictures.size() - lastPics; lastPics > 0; lastPics--, pos++) {
-                                Picture picture = this.pictures.get(pos);
-                                picture.setTextAfter(textBefore);
                             }
                         }
                         break;
@@ -144,8 +141,8 @@ public class XWPFUtils {
                                 List<XWPFParagraph> cellParagraphs = cell.getParagraphs();
                                 for (XWPFParagraph cParagraph: cellParagraphs) {
                                     Paragraph p = new Paragraph();
-                                    fill(cParagraph, p, true);
                                     p.setParagraphId(BigInteger.valueOf(count++));
+                                    fill(cParagraph, p, true);
                                     paragraphs.add(p);
                                     finalText = p.getParagraphText();
                                 }
@@ -177,6 +174,7 @@ public class XWPFUtils {
         private void fill(XWPFParagraph titleParagraph, Title title) {
             Paragraph_stype stype = extractParagraphStype(titleParagraph);
             stype.setParagraphId(title.getParagraphId());
+            this.paragraph_stypes.add(stype);
             title.setParagraphText(titleParagraph.getParagraphText());
             title.setLvl(stype.getLvl());
             title.setLineSpacing(stype.getLineSpacing());
@@ -193,7 +191,6 @@ public class XWPFUtils {
             stype.setIndentFromRight(xwpfParagraph.getIndentationRight());
             stype.setLineSpacing(xwpfParagraph.getSpacingBetween());
             stype.setLvl(lvlValue.get(xwpfParagraph.getStyle()));
-            this.paragraph_stypes.add(stype);
             return stype;
         }
 
@@ -206,6 +203,8 @@ public class XWPFUtils {
             paragraph.setLineSpacing(stype.getLineSpacing());
             paragraph.setLvl(stype.getLvl());
             paragraph.setInTable(inTable);
+            this.paragraph_stypes.add(stype);
+            paragraph.setParagraphText(xwpfParagraph.getParagraphText());
 
             // deal with fonts
             List<XWPFRun> runs = xwpfParagraph.getRuns();

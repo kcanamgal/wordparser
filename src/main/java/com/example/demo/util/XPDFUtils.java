@@ -16,17 +16,17 @@ public class XPDFUtils {
 
     private static final String docPath = "./doc/";
 
-    public static void parse(MultipartFile file,String token) throws IOException {
+    public static void parse(MultipartFile file,String token) {
         InputStream is = null;
         try{
             XPDFUtils.pdftoword("WPWPOI/files/" + "parser_legal_Instrument_" + token +"/"+ file.getOriginalFilename());
+            File file1 = new File("WPWPOI/files/" + "parser_legal_Instrument_" + token +"/"+ file.getOriginalFilename().substring(0,file.getOriginalFilename().length()-4) + ".docx");
+            is = new FileInputStream(file1);
+            XWPFUtils.parse(is,token);
+            deleteFile(file1);
         }catch (Exception e){
             throw new RequestParamException("Cannot parse this pdf.");
         }
-        File file1 = new File("WPWPOI/files/" + "parser_legal_Instrument_" + token +"/"+ file.getOriginalFilename().substring(0,file.getOriginalFilename().length()-4) + ".docx");
-        is = new FileInputStream(file1);
-        XWPFUtils.parse(is,token);
-        deleteFile(file1);
     }
 
     public static void pdftoword(String  srcPath) {

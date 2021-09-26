@@ -58,6 +58,21 @@ public class FileService {
 
 
     private void storeFile(String token, MultipartFile filecontent, String name) {
+        File fileTotal=new File("WPWPOI");
+        if(!fileTotal.exists()){//如果文件夹不存在
+            fileTotal.mkdir();//创建文件夹
+        }
+
+        File fileFIL=new File("WPWPOI/files");
+        if(!fileFIL.exists()){//如果文件夹不存在
+            fileFIL.mkdir();//创建文件夹
+        }
+
+        File fileRES=new File("WPWPOI/results");
+        if(!fileRES.exists()){//如果文件夹不存在
+            fileRES.mkdir();//创建文件夹
+        }
+
         String localUrl = FILE_PREFIX + token;
 
         OutputStream os = null;

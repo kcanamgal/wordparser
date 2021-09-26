@@ -4,6 +4,7 @@ import com.example.demo.VO.Token;
 import com.example.demo.exceptions.RequestParamException;
 import com.example.demo.util.HWPFUtils;
 import com.example.demo.util.XWPFUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,6 +51,8 @@ public class FileService {
         }
         return new Token(token);
     }
+
+
 
 
     private void storeFile(String token,MultipartFile filecontent, String name) {

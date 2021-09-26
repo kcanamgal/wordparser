@@ -171,11 +171,12 @@ public class XWPFUtils {
         }
 
         void write(String token) {
-            IOUtils.saveParserResult(paragraphs,tables,titles,fonts,pictures,paragraph_stypes,token);
+            IOUtils.saveParserResult(paragraphs, tables, titles, fonts, pictures, paragraph_stypes, token);
         }
 
         private void fill(XWPFParagraph titleParagraph, Title title) {
             Paragraph_stype stype = extractParagraphStype(titleParagraph);
+            stype.setParagraphId(title.getParagraphId());
             title.setParagraphText(titleParagraph.getParagraphText());
             title.setLvl(stype.getLvl());
             title.setLineSpacing(stype.getLineSpacing());
@@ -221,7 +222,7 @@ public class XWPFUtils {
                font.setParagraphId(paragraph.getParagraphId());
                font_stypes.add(font);
             }
-            if(font_stypes.size()>0){
+            if(font_stypes.size() > 0){
                 this.fonts.add(new ArrayList<>(font_stypes));
             }
             System.out.println(font_stypes.size());
